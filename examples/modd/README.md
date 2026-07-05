@@ -55,7 +55,7 @@ The MODD receives the following inputs:
 
 
 ## Running instructions
-To get an MODD monitor, we assume access to an already trained controller. For our example, we trained a controller that can be found in https://drive.google.com/file/d/1m1wTtaH-itQBq8zr_6Ylwh6CFYgLsrX4/view?usp=sharing. We recommend to put the controller in the folder `examples/modd/carla/models/controller_cte_dist_130.pth`. Instructions for training other controllers are included at the end of this section.
+To get an MODD monitor, we assume access to an already trained controller. For our example, we trained a controller that can be found in https://drive.google.com/file/d/1m1wTtaH-itQBq8zr_6Ylwh6CFYgLsrX4/view?usp=sharing. We recommend to put the controller in the folder `examples/modd/models/controller_cte_dist_130.pth`. Instructions for training other controllers are included at the end of this section.
 
 ### Setup instructions for our example
 - Create a virtual environment with python=3.9.

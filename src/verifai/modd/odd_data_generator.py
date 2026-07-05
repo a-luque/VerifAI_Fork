@@ -3,6 +3,7 @@ import os
 from abc import ABC
 
 from verifai.modd.odd_sampler import ODDSampler
+from verifai.samplers import TerminationException
 
 
 class DataGenerator(ABC):
@@ -66,12 +67,10 @@ class GenericDataGenerator(DataGenerator):
                         print(f"Saving in {save_path}training_{i}.pkl")
                         with open(os.path.join(save_path + os.sep, f"training_{i}.pkl"), 'wb') as filehandler:
                             pickle.dump(self.samples, filehandler)
-                except Exception:
+                except TerminationException:
                     if self.datagen_params.verbosity >= 1:
-                        if i >= num_simulations:
-                            print("Sampler has generated all possible samples")
-                        else:
-                            print("Sampling failed.")
+                        print("Sampler has generated all possible samples")
+                    break
                 except KeyboardInterrupt:
                     break
                 

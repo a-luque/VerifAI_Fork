@@ -84,14 +84,12 @@ class GenericEvaluator(Evaluator):
                         with open(filename, 'wb') as filehandler: 
                             pickle.dump(self.samples, filehandler)
 
-                except:
+                except TerminationException:
                     if self.eval_params.verbosity >= 1:
-                        if i >= num_simulations:
-                            print("Sampler has generated all possible samples")
-                        else:
-                            print("Sampling failed.")
-                            break
-                    pass
+                        print("Sampler has generated all possible samples")
+                    break
+                except KeyboardInterrupt:
+                    break
         finally:
             self.sampling_params.server.terminate()
         if self.eval_params.verbosity >= 1:

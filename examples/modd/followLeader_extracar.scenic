@@ -20,7 +20,7 @@ from modd_torch import CNN
 from modd_torch import MLP
 
 param timeout = 180
-param map = localPath('../../../tests/scenic/Town01.xodr')
+param map = localPath('../../tests/scenic/Town01.xodr')
 param carla_map = 'Town01'
 param timeBound = 300
 

@@ -9,7 +9,7 @@ from scenic.domains.driving.controllers import (
 )
 
 param timeout = 30
-param map = localPath('../../../tests/scenic/Town01.xodr')
+param map = localPath('../../tests/scenic/Town01.xodr')
 param carla_map = 'Town01'
 param render = 1
 

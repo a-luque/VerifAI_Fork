@@ -16,7 +16,7 @@ sampler = ScenicSampler.fromScenario(path, mode2D=True)
 
 # Define the specification (i.e. evaluation metric) as an MTL formula.
 # Our example spec will say that the ego object stays at least 5 meters away
-# from all other objects. See the Scenic file for the defintion of the
+# from all other objects. See the Scenic file for the definition of the
 # signal "safe".
 monitor = Monitor.fromMTL("G safe")
 

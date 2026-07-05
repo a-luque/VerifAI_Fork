@@ -11,8 +11,8 @@ class ODDSampler():
             server_params.update(self.sampling_params.server_options)
             self.init_server(server_params, self.sampling_params.server_class)
             self.sampling_params.server = self.server
-        except Exception:
-            print("ODDSampler initialization failed. Is the server a Scenic server?")
+        except Exception as e:
+            raise RuntimeError("ODDSampler initialization failed. Is the server a Scenic server?") from e
 
 
     def init_server(self, server_options, server_class):

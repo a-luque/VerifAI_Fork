@@ -1,6 +1,5 @@
 import os.path
 import sys
-sys.path.append("./carla")
 
 from dotmap import DotMap
 import numpy as np
@@ -11,10 +10,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
-from modd_torch import MLP
-from verifai.monitor import specification_monitor, mtl_specification
+from verifai import Monitor, ScenicServer
 from verifai.modd.odd_learner import MODDLearner
-from verifai.scenic_server import ScenicServer
+
+from modd_torch import MLP
 
 
 VERBOSITY = 1
@@ -122,28 +121,17 @@ eval_params = DotMap(
 #################### Sampling parameters ############################
 #####################################################################
 
-class SpecMonitor(specification_monitor):
-    def __init__(self):
-        self.specification = mtl_specification(['G safe'])
-        super().__init__(self.specification)
 
-    def evaluate(self, simulation):
-        # Get trajectories of objects from the result of the simulation
-        records = simulation.result.records
-        distLeader = records["distLeader"]
+def spec_monitor(simulation):
+    records = simulation.result.records
+    distLeader = records["distLeader"]
 
-        # Compute time-stamped sequence of values for 'safe' atomic proposition;
-        # we'll define safe = "distance from ego to leader < 20"
-        safe_values = []
-        for (_,dist) in distLeader:
-            safe_values.append(20 - dist)
-        eval_dictionary = {'safe' : list(enumerate(safe_values)) }
+    # we'll define safe = "distance from ego to leader < 20"
+    return min(20 - dist for _, dist in distLeader)
 
-        # Evaluate MTL formula given values for its atomic propositions
-        return self.specification.evaluate(eval_dictionary)
 
 # Load the Scenic scenario and create a sampler from it
-path = os.path.join(os.path.dirname(__file__), 'carla/followLeader_extracar.scenic')
+path = os.path.join(os.path.dirname(__file__), 'followLeader_extracar.scenic')
 
 server_options = DotMap(maxSteps=300, 
                         mode2D=True, 
@@ -152,24 +140,24 @@ server_options = DotMap(maxSteps=300,
                                       "render" : 0, 
                                       "verbosity": 3, 
                                       "timeBound": 300, 
-                                      "controller": os.path.join(os.path.dirname(__file__), 'carla/models/controller_cte_dist_130.pth')},
+                                      "controller": os.path.join(os.path.dirname(__file__), 'models/controller_cte_dist_130.pth')},
                         eval_params={"seed": 42, 
                                      "render" : 0, 
                                      "verbosity": 3, 
                                      "timeBound": 300, 
-                                     "controller": os.path.join(os.path.dirname(__file__), 'carla/models/controller_cte_dist_130.pth')},
+                                     "controller": os.path.join(os.path.dirname(__file__), 'models/controller_cte_dist_130.pth')},
                         eval_nomonitor_params={"monitor": "", 
                                                "seed": 42, 
                                                "render" : 0, 
                                                "verbosity": 3, 
                                                "timeBound": 300, 
-                                               "controller": os.path.join(os.path.dirname(__file__), 'carla/models/controller_cte_dist_130.pth')},
+                                               "controller": os.path.join(os.path.dirname(__file__), 'models/controller_cte_dist_130.pth')},
                         verbosity=VERBOSITY)
 
 sampling_params = DotMap(
     path=path,
-    controller_path= os.path.join(os.path.dirname(__file__), 'carla/models/controller_cte_dist_130.pth'),
-    spec_monitor=SpecMonitor(), 
+    controller_path= os.path.join(os.path.dirname(__file__), 'models/controller_cte_dist_130.pth'),
+    spec_monitor=spec_monitor,
     server_type="scenic",
     server_class=ScenicServer,
     server_options=server_options,
