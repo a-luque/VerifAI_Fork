@@ -41,7 +41,7 @@ dependencies = [
     'pygame ~= 2.1; python_version < "3.10"',
 	"kmodes <= 0.10.2",
 	"scenic >= 3.0.0, <4",
-	"progressbar2 ~= 3.53",
+	"tqdm ~= 4.0",
 	"networkx >= 2.6",
 	"statsmodels >= 0.13.2",
 ]
