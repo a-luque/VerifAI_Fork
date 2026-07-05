@@ -21,10 +21,10 @@ class resNet(nn.Module):
     Use restnet from torchvision
     """
 
-    def __init__(self, layers="18", pre_trained=False):
+    def __init__(self, layers="18"):
         super(resNet, self).__init__()
         if layers == "18":
-            self.model = torchvision.models.resnet18(pretrained=pre_trained)
+            self.model = torchvision.models.resnet18()
         else:
             raise NotImplementedError
 
@@ -34,10 +34,10 @@ class resNet(nn.Module):
 
 
 class CNN(nn.Module):
-    def __init__(self, resnet=False, pretrained=False):
+    def __init__(self, resnet=False):
         super(CNN, self).__init__()
         if resnet:
-            self.model = resNet(pre_trained=pretrained)
+            self.model = resNet()
         else:
             raise NotImplementedError
         self.fc1 = nn.Linear(1000,1024)

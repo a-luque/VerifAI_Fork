@@ -122,13 +122,14 @@ eval_params = DotMap(
 #####################################################################
 
 
-def spec_monitor(simulation):
+def spec(simulation):
     records = simulation.result.records
     distLeader = records["distLeader"]
 
     # we'll define safe = "distance from ego to leader < 20"
     return min(20 - dist for _, dist in distLeader)
 
+spec_monitor = Monitor.fromFunctions(spec)
 
 # Load the Scenic scenario and create a sampler from it
 path = os.path.join(os.path.dirname(__file__), 'followLeader_extracar.scenic')

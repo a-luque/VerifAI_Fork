@@ -23,7 +23,8 @@ param timeout = 180
 param map = localPath('../../tests/scenic/Town01.xodr')
 param carla_map = 'Town01'
 param timeBound = 300
-
+param monitor = ""
+param monitor_type = ""
 
 
 model scenic.simulators.carla.model
